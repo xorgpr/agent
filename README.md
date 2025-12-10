@@ -14,3 +14,17 @@
 
 If you see any errors during installation, just update the dependencies that will be specified in the error description (for example, `npm`).
 This is normal, as this is a stock image, which gives it a lot of pre-installed software, but it is not updated often.
+
+### Steps to running Qwen CLI with devconatiner.
+
+1. Install qwen-code:
+    ```bash
+    npm install -g @qwen-code/qwen-code@latest
+    ```
+
+2. Run qwen:
+    ```bash
+    qwen
+    ```
+
+3. Login to your account with QR code.
