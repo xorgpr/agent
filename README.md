@@ -28,3 +28,20 @@ This is normal, as this is a stock image, which gives it a lot of pre-installed 
     ```
 
 3. Login to your account with QR code.
+
+### Steps to running Devstral VIBE CLI with devconatiner.
+
+1. Run next command:
+    ```bash
+    curl -LsSf https://mistral.ai/vibe/install.sh | bash
+    ```
+
+2. Just follow instruction from cli app.
+
+
+
+#### Most likely the npm should be updated as first step (for Gemini and Qwen):
+
+    ```bash
+    npm install -g npm@11.7.0
+    ```
