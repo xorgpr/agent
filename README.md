@@ -49,6 +49,7 @@ This is normal, as this is a stock image, which gives it a lot of pre-installed 
 
 #### Most likely the npm should be updated as first step (for Gemini and Qwen):
 
+1. Install newest npm
     ```bash
     npm install -g npm@11.7.0
     ```
