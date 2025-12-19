@@ -38,6 +38,11 @@ This is normal, as this is a stock image, which gives it a lot of pre-installed 
 
 2. Just follow instruction from cli app.
 
+3. To run:
+    ```bash
+    vibe
+    ```
+
 ### Steps to running Claude Code with devconatiner.
 
 1. Run next command:
