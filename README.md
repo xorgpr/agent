@@ -8,6 +8,14 @@
     ```bash
     npx https://github.com/google-gemini/gemini-cli
     ```
+    or install it:
+    ```bash
+    npm install -g @google/gemini-cli
+    ```
+
+    ```bash
+    gemini --model gemini-2.5-flash
+    ```
 
 If you see any errors during installation, just update the dependencies that will be specified in the error description (for example, `npm`).
 This is normal, as this is a stock image, which gives it a lot of pre-installed software, but it is not updated often.
