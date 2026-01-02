@@ -4,6 +4,12 @@
     ```
     export GEMINI_API_KEY="xxx"
     ```
+
+    Currently works just with this model:
+    ```
+    export GEMINI_MODEL="gemini-2.5-flash"
+    ```
+
 3. To run gemini:
     ```bash
     npx https://github.com/google-gemini/gemini-cli
