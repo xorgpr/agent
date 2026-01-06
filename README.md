@@ -61,9 +61,13 @@ This is normal, as this is a stock image, which gives it a lot of pre-installed 
     npm install -g npm@11.7.0
     ```
 
+### Run Claude CLI
+1. Init OpenRouter api key
+    ```bash
+    export OPENROUTER_API_KEY="api_key"
+    ```
 
-
-####
-export OPENROUTER_API_KEY="api_key"
-
-run ccr code
+2. Run Claude
+    ```bash
+    ccr code
+    ```
