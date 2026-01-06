@@ -1,5 +1,5 @@
 {
     "image":"mcr.microsoft.com/devcontainers/universal:2",
-    "postCreateCommand": "sudo npm install -g npm@11.7.0 && sudo npm install -g @anthropic-ai/claude-code && sudo npm install -g @musistudio/claude-code-router",
+    "postCreateCommand": "mkdir -p ~/.claude-code-router && cp .devcontainer/claude-code-router-config.yaml ~/.claude-code-router/config.yaml && sudo npm install -g npm@11.7.0 && sudo npm install -g @anthropic-ai/claude-code && sudo npm install -g @musistudio/claude-code-router",
     "remoteUser": "codespace"
 }
