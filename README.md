@@ -60,3 +60,10 @@ This is normal, as this is a stock image, which gives it a lot of pre-installed 
     ```bash
     npm install -g npm@11.7.0
     ```
+
+
+
+####
+export OPENROUTER_API_KEY="api_key"
+
+run ccr code

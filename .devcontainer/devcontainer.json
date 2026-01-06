@@ -1,1 +1,5 @@
-{"image":"mcr.microsoft.com/devcontainers/universal:2"}
+{
+    "image":"mcr.microsoft.com/devcontainers/universal:2",
+    "postCreateCommand": "sudo npm install -g npm@11.7.0 && sudo npm install -g @anthropic-ai/claude-code && sudo npm install -g @musistudio/claude-code-router",
+    "remoteUser": "codespace"
+}
