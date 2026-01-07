@@ -69,3 +69,8 @@ This is normal, as this is a stock image, which gives it a lot of pre-installed 
     export OPENROUTER_API_KEY="api_key"
     ccr code
     ```
+
+### OpenCode
+    ```bash
+    curl -fsSL https://opencode.ai/install | bash
+    ```
