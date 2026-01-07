@@ -60,3 +60,12 @@ This is normal, as this is a stock image, which gives it a lot of pre-installed 
     ```bash
     npm install -g npm@11.7.0
     ```
+
+### CC + qwen3 over openrouter
+    ```bash
+    mkdir -p ~/.claude-code-router
+    sudo npm install -g npm@11.7.0 && sudo npm install -g @anthropic-ai/claude-code && sudo npm install -g @musistudio/claude-code-router
+    cp configurations/claude-code-router-config.json ~/.claude-code-router/config.json
+    export OPENROUTER_API_KEY="api_key"
+    ccr code
+    ```
