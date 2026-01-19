@@ -74,3 +74,20 @@ This is normal, as this is a stock image, which gives it a lot of pre-installed 
     ```bash
     curl -fsSL https://opencode.ai/install | bash
     ```
+
+### CC + qwen3 over qwen oauth login
+    1. Install qwen and login with QR-code.
+    ```bash
+    npm install -g npm@11.7.0 && npm install -g @qwen-code/qwen-code@latest
+    qwen
+    ```
+    2. Install CC and copy configuration
+    ```bash
+    mkdir -p ~/.claude-code-router && sudo npm install -g @anthropic-ai/claude-code && sudo npm install -g @musistudio/claude-code-router
+    cp configurations/claude-code-router-config-qwen.json ~/.claude-code-router/config.json
+    ```
+    3. Update your API key in ~/.claude-code-router/config.json for qwen from the ~/.qwen/oauth_creds.json (refresh_token)
+    4. Run
+    ```bash
+    ccr code
+    ```
