@@ -87,6 +87,10 @@ This is normal, as this is a stock image, which gives it a lot of pre-installed 
     cp configurations/claude-code-router-config-qwen.json ~/.claude-code-router/config.json
     ```
 3. Update your API key in ~/.claude-code-router/config.json for qwen from the ~/.qwen/oauth_creds.json (refresh_token)
+or just call
+    ```bash
+    export QWEN_API_KEY=$(cat ~/.qwen/oauth_creds.json | grep access_token | awk -F '"' '{print $4}')
+    ```
 4. Run
     ```bash
     ccr code

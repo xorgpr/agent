@@ -12,7 +12,7 @@
     {
       "name": "qwen",
       "api_base_url": "https://portal.qwen.ai/v1/chat/completions",
-      "api_key": "put_API_key_from ~/.qwen/oauth_creds.json _access_token_",
+      "api_key": "$QWEN_API_KEY",
       "models": [
         "qwen3-coder-plus",
         "qwen3-coder-plus",
