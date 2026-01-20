@@ -95,3 +95,11 @@ or just call
     ```bash
     ccr code
     ```
+Or just run and login via google auth or somehow in the qwen:
+    ```bash
+    npm install -g npm@11.7.0 && npm install -g @qwen-code/qwen-code@latest && qwen
+    ```
+and:
+    ```bash
+    mkdir -p ~/.claude-code-router && sudo npm install -g @anthropic-ai/claude-code && sudo npm install -g @musistudio/claude-code-router && cp configurations/claude-code-router-config-qwen.json ~/.claude-code-router/config.json && export QWEN_API_KEY=$(cat ~/.qwen/oauth_creds.json | grep access_token | awk -F '"' '{print $4}') && ccr code
+    ```
