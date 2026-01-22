@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P2P Video Chat</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="video-container">
+        <video id="remote-video" playsinline autoplay muted></video>
+        <video id="local-video" playsinline autoplay muted></video>
+    </div>
+
+    <div id="controls">
+        <button id="copy-link-btn">Copy Invite Link</button>
+        <button id="play-video-btn" style="display:none;">Play Video</button>
+        <div id="status-indicator">Connecting...</div>
+    </div>
+
+    <div id="console-log" style="display: none;">
+        <div id="console-content"></div>
+    </div>
+
+    <!-- Load PeerJS from CDN -->
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

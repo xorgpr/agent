@@ -1,0 +1,155 @@
+/* Modern dark theme for video chat */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: #121212;
+    color: #ffffff;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+#video-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+#remote-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background-color: #000;
+}
+
+#local-video {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 120px;
+    height: 90px;
+    border-radius: 12px;
+    object-fit: cover;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transform: scaleX(-1); /* Mirror effect for local video */
+    z-index: 10;
+}
+
+#controls {
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    z-index: 20;
+    padding: 0 20px;
+}
+
+#copy-link-btn {
+    background: linear-gradient(45deg, #6a11cb, #2575fc);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(37, 117, 252, 0.3);
+    transition: all 0.3s ease;
+}
+
+#copy-link-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(37, 117, 252, 0.4);
+}
+
+#copy-link-btn:active {
+    transform: translateY(0);
+}
+
+#status-indicator {
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    backdrop-filter: blur(10px);
+}
+
+/* Console log overlay for mobile debugging */
+#console-log {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #00ff00;
+    padding: 10px;
+    border-radius: 5px;
+    font-family: monospace;
+    font-size: 12px;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 100;
+    width: calc(100% - 40px);
+    backdrop-filter: blur(5px);
+}
+
+#console-content {
+    max-height: 130px;
+    overflow-y: auto;
+}
+
+/* Responsive design for mobile */
+@media (max-width: 768px) {
+    #local-video {
+        width: 100px;
+        height: 75px;
+        top: 15px;
+        right: 15px;
+    }
+
+    #controls {
+        bottom: 20px;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    #copy-link-btn {
+        width: 80%;
+        max-width: 250px;
+    }
+
+    #status-indicator {
+        width: 80%;
+        max-width: 250px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    #local-video {
+        width: 80px;
+        height: 60px;
+        top: 10px;
+        right: 10px;
+    }
+
+    #controls {
+        bottom: 15px;
+        gap: 12px;
+    }
+
+    #copy-link-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+}
