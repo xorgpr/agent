@@ -1,0 +1,8 @@
+Establishing Pinggy tunnel for PeerJS server...
+This will expose your local port 9000 to the public internet.
+
+No RSA host key is known for [a.pinggy.io]:443 and you have requested strict checking.
+Host key verification failed.
+
+Tunnel closed. The public URL was displayed above.
+Use that URL to update your frontend configuration.

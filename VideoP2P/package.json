@@ -1,0 +1,21 @@
+{
+  "name": "p2p-video-chat-server",
+  "version": "1.0.0",
+  "description": "P2P Video Chat Signaling Server",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.22.1",
+    "peer": "^0.6.1"
+  },
+  "keywords": [
+    "p2p",
+    "webrtc",
+    "video",
+    "chat"
+  ],
+  "author": "",
+  "license": "MIT"
+}
