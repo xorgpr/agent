@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>P2P Video Chat</title>
+    <title>Hybrid Video Chat</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
             background-color: #f5f5f5;
@@ -19,7 +19,7 @@
             margin: 20px 0;
             background-color: white;
         }
-        input, button {
+        input, button, select {
             padding: 10px;
             margin: 5px;
             font-size: 16px;
@@ -60,31 +60,31 @@
             color: #0c5460;
             border: 1px solid #bee5eb;
         }
-        .video-container {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 20px;
             margin: 20px 0;
         }
         .video-box {
             text-align: center;
-            flex: 1;
-            min-width: 300px;
-        }
-        video {
-            width: 100%;
-            max-width: 400px;
-            height: auto;
-            background-color: #000;
             border: 2px solid #ddd;
             border-radius: 5px;
+            overflow: hidden;
+            background-color: #000;
+        }
+        .video-box video {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
         }
         .video-label {
             display: block;
-            margin-top: 10px;
+            padding: 10px;
             font-weight: bold;
             color: #333;
+            background-color: #f0f0f0;
         }
         .controls {
             text-align: center;
@@ -99,10 +99,32 @@
         .auto-connect:hover {
             background-color: #218838;
         }
+        .mode-selector {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+        }
+        .mode-btn {
+            margin: 5px;
+            padding: 10px 15px;
+            font-size: 14px;
+        }
+        .active-mode {
+            background-color: #28a745 !important;
+        }
     </style>
 </head>
 <body>
-    <h1>P2P Video Chat</h1>
+    <h1>Hybrid Video Chat</h1>
+
+    <div class="mode-selector">
+        <h3>Connection Mode</h3>
+        <button id="p2p-mode-btn" class="mode-btn" onclick="switchMode('p2p')">P2P Mode</button>
+        <button id="sfu-mode-btn" class="mode-btn" onclick="switchMode('sfu')">SFU Mode</button>
+        <p>Current Mode: <span id="current-mode">P2P</span></p>
+    </div>
 
     <div class="container">
         <h2>Connection Status</h2>
@@ -111,34 +133,53 @@
         <p>Share this link to invite others: <input type="text" id="share-link" readonly style="width: 300px;"></p>
     </div>
 
-    <div class="video-container">
-        <div class="video-box">
-            <video id="my-video" autoplay muted playsinline></video>
-            <span class="video-label">Your Video</span>
+    <div id="p2p-section">
+        <div class="video-container">
+            <div class="video-box">
+                <video id="my-video-p2p" autoplay muted playsinline></video>
+                <span class="video-label">Your Video</span>
+            </div>
+            <div class="video-box">
+                <video id="remote-video-p2p" autoplay playsinline></video>
+                <span class="video-label">Remote Video</span>
+            </div>
         </div>
-        <div class="video-box">
-            <video id="remote-video" autoplay playsinline></video>
-            <span class="video-label">Remote Video</span>
+
+        <div class="controls">
+            <button id="call-btn-p2p" onclick="startCallP2P()" disabled>Start Video Call</button>
+            <button id="end-call-btn-p2p" onclick="endCallP2P()" disabled>End Call</button>
         </div>
     </div>
 
-    <div class="controls">
-        <button id="call-btn" onclick="startCall()" disabled>Start Video Call</button>
-        <button id="end-call-btn" onclick="endCall()" disabled>End Call</button>
+    <div id="sfu-section" class="hidden">
+        <div id="sfu-video-grid" class="video-grid">
+            <div class="video-box">
+                <video id="my-video-sfu" autoplay muted playsinline></video>
+                <span class="video-label">You</span>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button id="join-room-btn" onclick="joinSFURoom()">Join Room</button>
+            <button id="leave-room-btn" onclick="leaveSFURoom()" disabled>Leave Room</button>
+        </div>
     </div>
 
     <div class="container">
         <h2>Instructions</h2>
         <ol>
-            <li>Copy the link above and share it with the person you want to call</li>
-            <li>Both of you will join the same room automatically</li>
-            <li>After both peers join, either one can click "Start Video Call" to begin the video session</li>
-            <li>If automatic connection doesn't work, use the manual connection section below to connect using peer IDs</li>
+            <li><strong>P2P Mode</strong>: Copy the link above and share it with the person you want to call (1:1 only)</li>
+            <li><strong>SFU Mode</strong>: Share the room ID with others to join multi-party conference</li>
+            <li>Switch between modes using the buttons above</li>
         </ol>
     </div>
 
     <!-- Load PeerJS from CDN -->
     <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    <!-- Load Socket.IO Client -->
+    <script src="/socket.io/socket.io.js"></script>
+    <!-- Load mediasoup client -->
+    <script src="https://unpkg.com/mediasoup-client@3/dist/mediasoup-client.min.js"></script>
     <script>
         // Default connection settings - will be updated after tunnel
         let peerConfig = {
@@ -177,12 +218,27 @@
             }
         };
 
+        // P2P variables
         let peer = null;
         let conn = null;
-        let localStream = null;
-        let remoteStream = null;
-        let currentCall = null;
+        let localStreamP2P = null;
+        let remoteStreamP2P = null;
+        let currentCallP2P = null;
         let roomPeers = []; // Track peers in the room
+
+        // SFU variables
+        let sfuSocket = null;
+        let device = null;
+        let sendTransport = null;
+        let recvTransport = null;
+        let producers = new Map();
+        let consumers = new Map();
+        let localStreamSFU = null;
+        let sfuRoomId = null;
+        let sfuPeerId = null;
+
+        // Current mode
+        let currentMode = 'p2p'; // 'p2p' or 'sfu'
 
         // Update the config when we know the public URL
         function updatePeerConfig(host) {
@@ -206,6 +262,285 @@
             }
 
             return roomId.toString();
+        }
+
+        // Switch between P2P and SFU modes
+        function switchMode(mode) {
+            if (currentMode === mode) return;
+
+            // Hide current mode sections
+            document.getElementById('p2p-section').classList.add('hidden');
+            document.getElementById('sfu-section').classList.add('hidden');
+
+            // Show selected mode section
+            if (mode === 'p2p') {
+                document.getElementById('p2p-section').classList.remove('hidden');
+                document.getElementById('current-mode').textContent = 'P2P';
+                document.getElementById('p2p-mode-btn').classList.add('active-mode');
+                document.getElementById('sfu-mode-btn').classList.remove('active-mode');
+
+                // Leave SFU room if currently in it
+                if (sfuSocket) {
+                    leaveSFURoom();
+                }
+            } else if (mode === 'sfu') {
+                document.getElementById('sfu-section').classList.remove('hidden');
+                document.getElementById('current-mode').textContent = 'SFU';
+                document.getElementById('sfu-mode-btn').classList.add('active-mode');
+                document.getElementById('p2p-mode-btn').classList.remove('active-mode');
+
+                // End P2P call if currently in one
+                if (currentCallP2P) {
+                    endCallP2P();
+                }
+            }
+
+            currentMode = mode;
+        }
+
+        // Initialize SFU
+        async function initSFU() {
+            if (device) return; // Already initialized
+
+            try {
+                // Initialize mediasoup client device
+                device = new mediasoupClient.Device();
+
+                // Connect to SFU signaling server
+                sfuSocket = io();
+
+                // Wait for router RTP capabilities
+                sfuSocket.on('router-rtp-capabilities', async (data) => {
+                    await device.load({ routerRtpCapabilities: data.rtpCapabilities });
+                    console.log('Device loaded with router RTP capabilities');
+                });
+
+                // Handle new producer from other peers
+                sfuSocket.on('new-producer', (data) => {
+                    console.log('New producer detected:', data);
+                    consumeProducer(data.producerId, data.peerId);
+                });
+
+                // Handle consumer creation
+                sfuSocket.on('consumer-created', async (data) => {
+                    console.log('Consumer created:', data);
+                    const consumer = await recvTransport.consume({
+                        id: data.id,
+                        producerId: data.producerId,
+                        kind: data.kind,
+                        rtpParameters: data.rtpParameters,
+                        appData: { peerId: data.peerId }
+                    });
+
+                    consumers.set(data.producerId, consumer);
+
+                    // Add video element for remote stream
+                    addRemoteVideoElement(data.producerId, data.peerId);
+
+                    // Attach consumer to video element
+                    const videoElement = document.getElementById(`remote-video-${data.producerId}`);
+                    if (videoElement) {
+                        mediasoupClient.parseScalabilityMode(consumer.rtpParameters.encodings[0].scalabilityMode);
+                        videoElement.srcObject = new MediaStream([consumer.track]);
+                    }
+                });
+
+                // Handle peer joined
+                sfuSocket.on('peer-joined', (data) => {
+                    console.log('Peer joined:', data);
+                    document.getElementById('status').textContent = `Peer joined room: ${data.peerInfo?.name || data.peerId}`;
+                });
+
+                // Handle peer left
+                sfuSocket.on('peer-left', (data) => {
+                    console.log('Peer left:', data);
+                    removeRemoteVideoElement(data.peerId);
+                    document.getElementById('status').textContent = `Peer left room: ${data.peerId}`;
+                });
+
+                // Handle peers list
+                sfuSocket.on('peers-list', (data) => {
+                    console.log('Existing peers:', data);
+                    data.forEach(peer => {
+                        document.getElementById('status').textContent = `Found existing peer: ${peer.peerInfo?.name || peer.id}`;
+                    });
+                });
+
+                console.log('SFU initialized');
+            } catch (error) {
+                console.error('Error initializing SFU:', error);
+                document.getElementById('status').textContent = `SFU initialization error: ${error.message}`;
+            }
+        }
+
+        // Join SFU room
+        async function joinSFURoom() {
+            try {
+                if (!device) {
+                    await initSFU();
+                }
+
+                // Get room ID from input or generate new one
+                const roomIdInput = prompt("Enter room ID:", getRoomId());
+                if (!roomIdInput) return;
+
+                sfuRoomId = roomIdInput;
+
+                // Get user name
+                const userName = prompt("Enter your name:", "Anonymous");
+                sfuPeerId = userName || "Anonymous";
+
+                // Join room
+                sfuSocket.emit('join', {
+                    roomId: sfuRoomId,
+                    peerInfo: { name: sfuPeerId }
+                });
+
+                document.getElementById('status').textContent = `Joined SFU room: ${sfuRoomId}`;
+                document.getElementById('join-room-btn').disabled = true;
+                document.getElementById('leave-room-btn').disabled = false;
+
+                // Get local stream
+                localStreamSFU = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                document.getElementById('my-video-sfu').srcObject = localStreamSFU;
+
+                // Create transports
+                await createSFUTransports();
+
+                // Start producing
+                await startProducing();
+
+            } catch (error) {
+                console.error('Error joining SFU room:', error);
+                document.getElementById('status').textContent = `Error joining room: ${error.message}`;
+            }
+        }
+
+        // Create SFU transports
+        async function createSFUTransports() {
+            // Create producer transport
+            sfuSocket.emit('create-web-rtc-transport', { consumer: false });
+
+            sfuSocket.on('web-rtc-transport-created', async (data) => {
+                sendTransport = device.createSendTransport({
+                    id: data.id,
+                    iceParameters: data.iceParameters,
+                    iceCandidates: data.iceCandidates,
+                    dtlsParameters: data.dtlsParameters,
+                    sctpParameters: data.sctpParameters,
+                });
+
+                // Handle transport produce
+                sendTransport.on('produce', async (parameters) => {
+                    return new Promise(async (resolve) => {
+                        sfuSocket.emit('produce', {
+                            kind: parameters.kind,
+                            rtpParameters: parameters.rtpParameters,
+                            producerTransportId: sendTransport.id
+                        }, (response) => {
+                            resolve(response);
+                        });
+                    });
+                });
+
+                console.log('Producer transport created');
+            });
+
+            // Create consumer transport
+            sfuSocket.emit('create-web-rtc-transport', { consumer: true });
+
+            sfuSocket.on('web-rtc-transport-created', async (data) => {
+                recvTransport = device.createRecvTransport({
+                    id: data.id,
+                    iceParameters: data.iceParameters,
+                    iceCandidates: data.iceCandidates,
+                    dtlsParameters: data.dtlsParameters,
+                    sctpParameters: data.sctpParameters,
+                });
+
+                console.log('Consumer transport created');
+            });
+        }
+
+        // Start producing media
+        async function startProducing() {
+            if (!sendTransport || !localStreamSFU) return;
+
+            const audioTrack = localStreamSFU.getAudioTracks()[0];
+            const videoTrack = localStreamSFU.getVideoTracks()[0];
+
+            if (audioTrack) {
+                const audioProducer = await sendTransport.produce({ track: audioTrack });
+                producers.set(audioProducer.id, audioProducer);
+                console.log('Started producing audio');
+            }
+
+            if (videoTrack) {
+                const videoProducer = await sendTransport.produce({ track: videoTrack });
+                producers.set(videoProducer.id, videoProducer);
+                console.log('Started producing video');
+            }
+        }
+
+        // Consume a producer
+        async function consumeProducer(producerId, peerId) {
+            if (!recvTransport) return;
+
+            sfuSocket.emit('consume', { producerId });
+        }
+
+        // Add remote video element
+        function addRemoteVideoElement(producerId, peerId) {
+            const videoGrid = document.getElementById('sfu-video-grid');
+            const videoBox = document.createElement('div');
+            videoBox.className = 'video-box';
+            videoBox.id = `video-box-${producerId}`;
+
+            videoBox.innerHTML = `
+                <video id="remote-video-${producerId}" autoplay playsinline></video>
+                <span class="video-label">${peerId}</span>
+            `;
+
+            videoGrid.appendChild(videoBox);
+        }
+
+        // Remove remote video element
+        function removeRemoteVideoElement(producerId) {
+            const videoBox = document.getElementById(`video-box-${producerId}`);
+            if (videoBox) {
+                videoBox.remove();
+            }
+        }
+
+        // Leave SFU room
+        function leaveSFURoom() {
+            if (sfuSocket) {
+                sfuSocket.emit('disconnect');
+            }
+
+            // Close all producers and consumers
+            for (const [id, producer] of producers) {
+                producer.close();
+            }
+            producers.clear();
+
+            for (const [id, consumer] of consumers) {
+                consumer.close();
+            }
+            consumers.clear();
+
+            // Clear video elements
+            const videoBoxes = document.querySelectorAll('#sfu-video-grid .video-box:not(:first-child)');
+            videoBoxes.forEach(box => box.remove());
+
+            // Reset UI
+            document.getElementById('my-video-sfu').srcObject = null;
+            document.getElementById('status').textContent = 'Left SFU room';
+            document.getElementById('join-room-btn').disabled = false;
+            document.getElementById('leave-room-btn').disabled = true;
+
+            sfuRoomId = null;
+            sfuPeerId = null;
         }
 
         // Global variables to track room participants
@@ -277,7 +612,7 @@
 
                         document.getElementById('status').textContent = `Connected to peer: ${connection.peer}`;
                         document.getElementById('status').className = 'status connected';
-                        document.getElementById('call-btn').disabled = false;
+                        document.getElementById('call-btn-p2p').disabled = false;
 
                         // Send our ID to the other peer
                         connection.send({ type: 'peerId', id: peer.id });
@@ -295,7 +630,7 @@
                         console.error('Connection error:', err);
                         if (conn === tempConnection) {
                             conn = null;
-                            document.getElementById('call-btn').disabled = true;
+                            document.getElementById('call-btn-p2p').disabled = true;
                         }
                     });
 
@@ -303,7 +638,7 @@
                         console.log('Connection closed');
                         if (conn === tempConnection) {
                             conn = null;
-                            document.getElementById('call-btn').disabled = true;
+                            document.getElementById('call-btn-p2p').disabled = true;
                         }
                     });
 
@@ -324,7 +659,7 @@
 
                             // Enable call button if we're connected
                             if (conn && conn.open) {
-                                document.getElementById('call-btn').disabled = false;
+                                document.getElementById('call-btn-p2p').disabled = false;
                             }
                         } else if (data.type === 'discover') {
                             // Another peer is discovering who's in the room
@@ -387,15 +722,15 @@
                     document.getElementById('status').textContent = `Incoming call from: ${call.peer}`;
 
                     // Answer the call automatically
-                    if (localStream) {
-                        call.answer(localStream);
+                    if (localStreamP2P) {
+                        call.answer(localStreamP2P);
                         setupCallEventHandlers(call);
                     } else {
                         // Get local stream first, then answer
                         navigator.mediaDevices.getUserMedia({ video: true, audio: true })
                             .then(function(stream) {
-                                localStream = stream;
-                                document.getElementById('my-video').srcObject = stream;
+                                localStreamP2P = stream;
+                                document.getElementById('my-video-p2p').srcObject = stream;
                                 call.answer(stream);
                                 setupCallEventHandlers(call);
                             })
@@ -538,7 +873,7 @@
 
                         document.getElementById('status').textContent = `Connected to peer: ${peerId}`;
                         document.getElementById('status').className = 'status connected';
-                        document.getElementById('call-btn').disabled = false;
+                        document.getElementById('call-btn-p2p').disabled = false;
 
                         // Send our ID to the other peer
                         connection.send({ type: 'peerId', id: peer.id });
@@ -556,7 +891,7 @@
                     // Only reset if this was our main connection
                     if (conn === connection) {
                         conn = null;
-                        document.getElementById('call-btn').disabled = true;
+                        document.getElementById('call-btn-p2p').disabled = true;
                     }
                 });
 
@@ -565,40 +900,40 @@
                     // Only reset if this was our main connection
                     if (conn === connection) {
                         conn = null;
-                        document.getElementById('call-btn').disabled = true;
+                        document.getElementById('call-btn-p2p').disabled = true;
                     }
                 });
             } catch (error) {
                 console.error('Failed to create connection:', error);
-                document.getElementById('call-btn').disabled = true;
+                document.getElementById('call-btn-p2p').disabled = true;
             }
         }
 
 
         function setupCallEventHandlers(call) {
-            currentCall = call;
+            currentCallP2P = call;
 
             call.on('stream', function(remoteStreamObj) {
                 console.log('Received remote stream');
-                remoteStream = remoteStreamObj;
-                document.getElementById('remote-video').srcObject = remoteStream;
+                remoteStreamP2P = remoteStreamObj;
+                document.getElementById('remote-video-p2p').srcObject = remoteStreamP2P;
                 document.getElementById('status').textContent = 'Call in progress';
-                document.getElementById('end-call-btn').disabled = false;
-                document.getElementById('call-btn').disabled = true;
+                document.getElementById('end-call-btn-p2p').disabled = false;
+                document.getElementById('call-btn-p2p').disabled = true;
             });
 
             call.on('close', function() {
                 console.log('Call ended');
-                endCall();
+                endCallP2P();
             });
 
             call.on('error', function(err) {
                 console.error('Call error:', err);
-                endCall();
+                endCallP2P();
             });
         }
 
-        function startCall() {
+        function startCallP2P() {
             if (!peer || !peer.id) {
                 alert('Not connected to signaling server yet!');
                 return;
@@ -615,8 +950,8 @@
             // Get access to local camera and microphone
             navigator.mediaDevices.getUserMedia({ video: true, audio: true })
                 .then(function(stream) {
-                    localStream = stream;
-                    document.getElementById('my-video').srcObject = stream;
+                    localStreamP2P = stream;
+                    document.getElementById('my-video-p2p').srcObject = stream;
 
                     // Initiate a call to the connected peer
                     console.log('Initiating call to peer:', conn.peer);
@@ -640,25 +975,25 @@
                 });
         }
 
-        function endCall() {
-            if (currentCall) {
-                currentCall.close();
+        function endCallP2P() {
+            if (currentCallP2P) {
+                currentCallP2P.close();
             }
-            if (localStream) {
-                localStream.getTracks().forEach(track => track.stop());
-                localStream = null;
+            if (localStreamP2P) {
+                localStreamP2P.getTracks().forEach(track => track.stop());
+                localStreamP2P = null;
             }
-            if (remoteStream) {
-                remoteStream.getTracks().forEach(track => track.stop());
-                remoteStream = null;
+            if (remoteStreamP2P) {
+                remoteStreamP2P.getTracks().forEach(track => track.stop());
+                remoteStreamP2P = null;
             }
 
-            document.getElementById('remote-video').srcObject = null;
+            document.getElementById('remote-video-p2p').srcObject = null;
             document.getElementById('status').textContent = 'Call ended';
             document.getElementById('status').className = 'status info';
-            document.getElementById('call-btn').disabled = false;
-            document.getElementById('end-call-btn').disabled = true;
-            currentCall = null;
+            document.getElementById('call-btn-p2p').disabled = false;
+            document.getElementById('end-call-btn-p2p').disabled = true;
+            currentCallP2P = null;
         }
 
         // Connect when page loads

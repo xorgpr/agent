@@ -1,32 +1,26 @@
-P2P Video Chat server listening on port 9000
-Signaling path: /p2p
+
+> p2p-video-chat-server@2.0.0 start
+> node server.js
+
+Hybrid Video Chat server listening on port 9000
+P2P Signaling path: /p2p
+SFU Signaling path: WebSocket
 Frontend available at: /
 Proxied: true
-New client connected: 7636_1769189999363_tn3me
-Client disconnected: 7636_1769189999363_tn3me
-New client connected: 3247_1769190032233_qcs4q
-New client connected: 3247_1769190037734_pt4cl
-New client connected: 3247_1769190044571_43k0r
-Client disconnected: 3247_1769190037734_pt4cl
-New client connected: 3247_1769190054393_68hv2
-Client disconnected: 3247_1769190044571_43k0r
-New client connected: 3247_1769190068810_27fl9
-Client disconnected: 3247_1769190032233_qcs4q
-New client connected: 3247_1769190077193_g7w9i
-New client connected: 3247_1769190110676_ynj8l
-Client disconnected: 3247_1769190054393_68hv2
-Client disconnected: 3247_1769190068810_27fl9
-New client connected: 3247_1769190126011_lim5y
-New client connected: 3247_1769190129405_2q36r
-Client disconnected: 3247_1769190126011_lim5y
-Client disconnected: 3247_1769190110676_ynj8l
-New client connected: 3247_1769190138704_phuy8
-New client connected: 3247_1769190227557_zujxu
-Client disconnected: 3247_1769190129405_2q36r
-New client connected: 3211_1769190234821_8kbx8
-Client disconnected: 3247_1769190227557_zujxu
-New client connected: 3211_1769190242738_dmkdm
-Client disconnected: 3247_1769190077193_g7w9i
-Client disconnected: 3247_1769190138704_phuy8
-Client disconnected: 3211_1769190234821_8kbx8
-Client disconnected: 3211_1769190242738_dmkdm
+mediasoup workers created
+P2P client connected: 6141_1769204183246_jon8v
+P2P client disconnected: 6141_1769204183246_jon8v
+P2P client connected: 6141_1769204258705_s3mjl
+P2P client connected: 6141_1769204292020_5wfqa
+P2P client connected: 6141_1769204391488_5w3pu
+P2P client connected: 6141_1769204396625_k5vg4
+P2P client disconnected: 6141_1769204258705_s3mjl
+P2P client disconnected: 6141_1769204292020_5wfqa
+P2P client disconnected: 6141_1769204396625_k5vg4
+P2P client disconnected: 6141_1769204391488_5w3pu
+P2P client connected: 6141_1769204505328_uoowf
+P2P client connected: 6141_1769204556738_tu8lk
+P2P client disconnected: 6141_1769204505328_uoowf
+P2P client connected: 6141_1769204728054_e768g
+P2P client disconnected: 6141_1769204728054_e768g
+P2P client disconnected: 6141_1769204556738_tu8lk

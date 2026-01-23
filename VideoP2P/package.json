@@ -1,17 +1,21 @@
 {
   "name": "p2p-video-chat-server",
-  "version": "1.0.0",
-  "description": "P2P Video Chat Signaling Server",
+  "version": "2.0.0",
+  "description": "P2P and SFU Video Chat Signaling Server",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
     "express": "^4.22.1",
-    "peer": "^0.6.1"
+    "peer": "^0.6.1",
+    "mediasoup": "^3.14.5",
+    "socket.io": "^4.7.5",
+    "socket.io-client": "^4.7.5"
   },
   "keywords": [
     "p2p",
+    "sfu",
     "webrtc",
     "video",
     "chat"

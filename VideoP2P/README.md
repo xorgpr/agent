@@ -1,19 +1,22 @@
-# P2P Video Chat with PeerJS and Pinggy Tunnel
+# Hybrid Video Chat with P2P and SFU Support
 
-This project sets up a P2P video chat application using PeerJS for signaling and WebRTC for direct video/audio streaming, with Pinggy tunneling to make it accessible globally.
+This project sets up a hybrid video chat application supporting both traditional P2P (Peer-to-Peer) and modern SFU (Selective Forwarding Unit) architectures using WebRTC technology, with Pinggy tunneling to make it accessible globally.
 
 ## Components
 
-1. **Unified Server**: Single Node.js server serving both frontend and signaling on port 9000
-2. **Frontend UI**: HTML interface to test peer connections and video chat
-3. **Public Tunnel**: Pinggy tunnel exposing the local server to the internet
+1. **Unified Server**: Single Node.js server serving both frontend and dual signaling systems on port 9000
+2. **Dual Signaling**:
+   - P2P: Traditional PeerJS signaling for direct 1:1 connections
+   - SFU: mediasoup-based SFU for multi-party conferences
+3. **Frontend UI**: HTML interface with mode switching capability
+4. **Public Tunnel**: Pinggy tunnel exposing the local server to the internet
 
 ## How It Works
 
-- The unified server serves both the frontend UI and handles signaling for WebRTC connections
-- Pinggy creates a public tunnel to your local server
-- Peers can discover each other through the public signaling server
-- Actual video/audio streams flow directly between peers (P2P)
+- **P2P Mode**: The unified server handles traditional PeerJS signaling; video/audio streams flow directly between peers
+- **SFU Mode**: The server acts as a selective forwarding unit using mediasoup; all media flows through the server allowing multi-party conferences
+- Pinggy creates a public tunnel to your local server for global accessibility
+- Frontend allows switching between P2P and SFU modes seamlessly
 
 ## Setup & Running
 
@@ -22,18 +25,24 @@ This project sets up a P2P video chat application using PeerJS for signaling and
 ./start-all.sh
 ```
 This script will:
-- Start the unified server on port 9000
+- Install dependencies including mediasoup, socket.io, and client libraries
+- Start the hybrid server on port 9000 (handles both P2P and SFU)
 - Expose it to the public internet via Pinggy tunnel
 - Display the public URLs to share with others
 
 ### Manual Start:
-1. Start the local server:
+1. Install dependencies:
+```bash
+npm install
+```
+
+2. Start the local server:
 ```bash
 npm start
 ```
-This starts the unified server at `http://localhost:9000` (serves both frontend and signaling)
+This starts the unified server at `http://localhost:9000` (serves both frontend and dual signaling)
 
-2. In a separate terminal, start the Pinggy tunnel:
+3. In a separate terminal, start the Pinggy tunnel:
 ```bash
 ./start-tunnel.sh
 ```
@@ -45,17 +54,28 @@ This will output public URLs like:
 - Local: `http://localhost:9000`
 - Public: Use the URL provided by Pinggy tunnel
 
-## Files
+## Features
 
-- `server.js`: Unified server (frontend + signaling)
-- `index.html`: Frontend UI for testing connections
-- `package.json`: Dependencies (peer, express)
-- `start-all.sh`: Complete startup script (recommended)
-- `start-tunnel.sh`: Pinggy tunnel script
-- `README.md`: This file
+### P2P Mode (Legacy)
+- Direct peer-to-peer connections for 1:1 calls
+- Lower server load for simple conversations
+- Traditional PeerJS implementation
+
+### SFU Mode (Modern)
+- Multi-party conference support (3+ participants)
+- Better scalability and reliability
+- mediasoup-based SFU architecture
+- Dynamic video grid for all participants
+- Improved NAT traversal with advanced ICE configuration
+
+### Mode Switching
+- Seamless switching between P2P and SFU modes
+- Preserved connection state when switching
+- Dedicated UI for each mode
 
 ## Testing Video Chat
 
+### P2P Mode (1:1 only):
 1. Run `./start-all.sh` to start everything
 2. Note the public URL provided by Pinggy
 3. Share the public URL with someone else who wants to join
@@ -63,13 +83,46 @@ This will output public URLs like:
 5. Enter the other person's Peer ID in the "Destination Peer ID" field
 6. Click "Connect to Peer" to establish the connection
 
+### SFU Mode (Multi-party):
+1. Run `./start-all.sh` to start everything
+2. Navigate to the public URL
+3. Switch to "SFU Mode" using the mode selector
+4. Click "Join Room" and enter a room ID (or use the generated one)
+5. Share the room ID with others to join the conference
+6. All participants will see each other in the video grid
+
+## Architecture Benefits
+
+### P2P Mode:
+- Direct media flow (reduced latency)
+- Lower server resource usage
+- Simpler implementation
+
+### SFU Mode:
+- Supports many participants per room
+- Better quality in restricted networks
+- Bandwidth adaptation per recipient
+- Easier recording/streaming capabilities
+- Improved firewall/NAT traversal
+
+## Files
+
+- `server.js`: Hybrid server (frontend + P2P signaling + SFU signaling)
+- `index.html`: Frontend UI with dual-mode support
+- `package.json`: Dependencies (peer, express, mediasoup, socket.io)
+- `start-all.sh`: Complete startup script (recommended)
+- `start-tunnel.sh`: Pinggy tunnel script
+- `README.md`: This file
+
 ## Notes
 
 - The free Pinggy tier expires tunnels after 60 minutes
-- UDP traffic is supported for WebRTC connections
+- UDP traffic is supported for WebRTC connections in both modes
 - The frontend connects to the public tunnel to enable global discovery
-- Actual media flows directly between peers after signaling
+- In P2P mode, media flows directly between peers after signaling
+- In SFU mode, media flows through the server to all participants
 - Both frontend and signaling run on the same server/port for simplicity
+- SFU mode supports advanced features like simulcast and SVC
 
 history of bash commands:
 1  cd VideoP2P/

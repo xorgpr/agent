@@ -1,0 +1,12 @@
+Hybrid Video Chat server listening on port 9000
+P2P Signaling path: /p2p
+SFU Signaling path: WebSocket
+Frontend available at: /
+Proxied: true
+mediasoup workers created
+P2P client connected: 6141_1769205146805_jrxbf
+P2P client connected: 6141_1769205155065_pup8d
+P2P client disconnected: 6141_1769205155065_pup8d
+P2P client connected: 6141_1769205163993_p7f05
+P2P client disconnected: 6141_1769205163993_p7f05
+P2P client disconnected: 6141_1769205146805_jrxbf
