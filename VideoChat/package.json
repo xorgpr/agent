@@ -1,0 +1,21 @@
+{
+  "name": "mediasoup-video-chat",
+  "version": "1.0.0",
+  "description": "Minimalist SFU video chat with Mediasoup",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2",
+    "mediasoup": "^3.13.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": ["webrtc", "mediasoup", "video-chat", "sfu"],
+  "author": "",
+  "license": "MIT"
+}

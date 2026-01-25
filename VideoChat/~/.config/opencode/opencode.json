@@ -1,0 +1,5 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": ["opencode-alibaba-qwen3-auth"],
+  "model": "alibaba/coder-model"
+}

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Chat</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="video-container">
+            <video id="remoteVideo" autoplay playsinline muted></video>
+            <video id="localVideo" autoplay playsinline muted></video>
+        </div>
+        
+        <div class="controls">
+            <button id="copyLinkBtn" class="btn">Copy Link</button>
+            <button id="toggleDebugBtn" class="btn">Debug</button>
+        </div>
+        
+        <div id="debugConsole" class="debug-console hidden">
+            <div class="debug-header">
+                <h3>Debug Console</h3>
+                <button id="clearDebugBtn" class="btn-small">Clear</button>
+            </div>
+            <div id="debugLogs" class="debug-logs"></div>
+        </div>
+        
+        <div id="status" class="status"></div>
+    </div>
+
+    <script type="module" src="client.js"></script>
+</body>
+</html>

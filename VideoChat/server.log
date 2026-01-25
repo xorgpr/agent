@@ -1,0 +1,58 @@
+Server running on port 3000
+Announced IP: 127.0.0.1
+Client connected: FFefVgbqfXNKOgK5AAAB
+Peer FFefVgbqfXNKOgK5AAAB joined room room4
+Transport connect request from FFefVgbqfXNKOgK5AAAB
+Transport connected for FFefVgbqfXNKOgK5AAAB
+Producer request from FFefVgbqfXNKOgK5AAAB for audio
+✅ Producer created: 563a7fe4-e9df-45b1-ab8e-20852a49c00b (audio) by FFefVgbqfXNKOgK5AAAB
+📡 Media stream now being sent to SFU server from FFefVgbqfXNKOgK5AAAB
+Producer request from FFefVgbqfXNKOgK5AAAB for video
+✅ Producer created: 82b8cd3a-9c76-43a8-acd1-934bb0249bff (video) by FFefVgbqfXNKOgK5AAAB
+📡 Media stream now being sent to SFU server from FFefVgbqfXNKOgK5AAAB
+Client disconnected: FFefVgbqfXNKOgK5AAAB
+Client connected: n2QznTJidEau6BBxAAAD
+Peer n2QznTJidEau6BBxAAAD joined room room3
+Transport connect request from n2QznTJidEau6BBxAAAD
+Transport connected for n2QznTJidEau6BBxAAAD
+Producer request from n2QznTJidEau6BBxAAAD for audio
+✅ Producer created: 8a433fa7-33d5-4fcd-8659-ff2f0c6b6994 (audio) by n2QznTJidEau6BBxAAAD
+📡 Media stream now being sent to SFU server from n2QznTJidEau6BBxAAAD
+Producer request from n2QznTJidEau6BBxAAAD for video
+✅ Producer created: dba830d0-3465-435c-aac1-1d689e9f9658 (video) by n2QznTJidEau6BBxAAAD
+📡 Media stream now being sent to SFU server from n2QznTJidEau6BBxAAAD
+Client connected: KzuKAuNwwT26cUpHAAAF
+Peer KzuKAuNwwT26cUpHAAAF joined room room3
+Transport connect request from KzuKAuNwwT26cUpHAAAF
+Transport connected for KzuKAuNwwT26cUpHAAAF
+Producer request from KzuKAuNwwT26cUpHAAAF for audio
+✅ Producer created: 6756c1f4-c7d6-4ba3-beb3-7d8cf4855f6d (audio) by KzuKAuNwwT26cUpHAAAF
+📡 Media stream now being sent to SFU server from KzuKAuNwwT26cUpHAAAF
+Getting all producers for peer: n2QznTJidEau6BBxAAAD
+Emitted 2 producers from peer n2QznTJidEau6BBxAAAD
+Consumer created: a6267f41-62d1-4d37-a4aa-ab1ae6abf529 for producer 6756c1f4-c7d6-4ba3-beb3-7d8cf4855f6d by n2QznTJidEau6BBxAAAD
+Producer request from KzuKAuNwwT26cUpHAAAF for video
+✅ Producer created: 1d716bea-cb90-4279-bfcb-57666cce70a3 (video) by KzuKAuNwwT26cUpHAAAF
+📡 Media stream now being sent to SFU server from KzuKAuNwwT26cUpHAAAF
+Consumer created: 55dd48b5-3ac5-4b0d-969b-fc79bdfe4c07 for producer 8a433fa7-33d5-4fcd-8659-ff2f0c6b6994 by KzuKAuNwwT26cUpHAAAF
+Consumer created: 8f1f0fb8-a045-4153-943f-09a4ca9efe17 for producer dba830d0-3465-435c-aac1-1d689e9f9658 by KzuKAuNwwT26cUpHAAAF
+Consumer created: 987bbf1a-6fd2-495a-a08c-9db648c4bef1 for producer 1d716bea-cb90-4279-bfcb-57666cce70a3 by n2QznTJidEau6BBxAAAD
+Client disconnected: KzuKAuNwwT26cUpHAAAF
+Client connected: veFnJsdsmjqJA-RFAAAH
+Peer veFnJsdsmjqJA-RFAAAH joined room room3
+Transport connect request from veFnJsdsmjqJA-RFAAAH
+Transport connected for veFnJsdsmjqJA-RFAAAH
+Producer request from veFnJsdsmjqJA-RFAAAH for audio
+✅ Producer created: 19f2d9b9-d6b9-4c8a-8893-cc91cbe5c1df (audio) by veFnJsdsmjqJA-RFAAAH
+📡 Media stream now being sent to SFU server from veFnJsdsmjqJA-RFAAAH
+Consumer created: f16889a5-6150-4447-801e-765d6b77d7c2 for producer 19f2d9b9-d6b9-4c8a-8893-cc91cbe5c1df by n2QznTJidEau6BBxAAAD
+Producer request from veFnJsdsmjqJA-RFAAAH for video
+✅ Producer created: 84afbbc5-3966-4b47-8160-8b0bb88637d6 (video) by veFnJsdsmjqJA-RFAAAH
+📡 Media stream now being sent to SFU server from veFnJsdsmjqJA-RFAAAH
+Consumer created: 580e33f0-2812-4255-a352-5db89209e206 for producer 84afbbc5-3966-4b47-8160-8b0bb88637d6 by n2QznTJidEau6BBxAAAD
+Getting all producers for peer: n2QznTJidEau6BBxAAAD
+Emitted 2 producers from peer n2QznTJidEau6BBxAAAD
+Consumer created: fb4a4fb0-07aa-4f9e-aa06-000653d684e2 for producer 8a433fa7-33d5-4fcd-8659-ff2f0c6b6994 by veFnJsdsmjqJA-RFAAAH
+Consumer created: b29c78b8-e69c-43a1-8b03-8a752db76a88 for producer dba830d0-3465-435c-aac1-1d689e9f9658 by veFnJsdsmjqJA-RFAAAH
+Client disconnected: veFnJsdsmjqJA-RFAAAH
+Client disconnected: n2QznTJidEau6BBxAAAD
