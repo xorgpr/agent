@@ -110,6 +110,29 @@ Open-source AI coding tool.
 curl -fsSL https://opencode.ai/install | bash
 ```
 
+## OpenCode + Qwen3 over Qwen OAuth Login
+
+Open-source AI coding tool.
+
+### Setup Instructions
+```bash
+npm install -g npm@11.8.0 && curl -fsSL https://opencode.ai/install | bash && mkdir -p ~/.config/opencode && cat <<EOF > ~/.config/opencode/opencode.json
+{
+  "\$schema": "https://opencode.ai/config.json",
+  "plugin": ["opencode-alibaba-qwen3-auth"],
+  "model": "alibaba/coder-model"
+}
+EOF
+```
+in the other bash terminal: Select "Alibaba" → "Qwen Account (OAuth)"
+```bash
+opencode auth login
+```
+run opencode and chouse /models -> Alibaba -> qwen3-coder
+```bash
+opencode
+```
+
 ## Claude Code + Qwen3 over Qwen OAuth Login
 
 Configure Claude Code to route requests through Qwen via OAuth authentication.
