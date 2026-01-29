@@ -95,7 +95,7 @@ Configure Claude Code to route requests through Qwen3 via OpenRouter.
 ### Setup Instructions
 ```bash
 mkdir -p ~/.claude-code-router
-sudo npm install -g npm@11.7.0 && sudo npm install -g @anthropic-ai/claude-code && sudo npm install -g @musistudio/claude-code-router
+sudo npm install -g npm@11.8.0 && sudo npm install -g @anthropic-ai/claude-code && sudo npm install -g @musistudio/claude-code-router
 cp configurations/claude-code-router-config.json ~/.claude-code-router/config.json
 export OPENROUTER_API_KEY="api_key"
 ccr code
@@ -140,7 +140,7 @@ Configure Claude Code to route requests through Qwen via OAuth authentication.
 ### Setup Instructions
 1. Install Qwen and login with QR-code:
     ```bash
-    npm install -g npm@11.7.0 && npm install -g @qwen-code/qwen-code@latest
+    npm install -g npm@11.8.0 && npm install -g @qwen-code/qwen-code@latest
     qwen
     ```
 2. Install Claude Code and copy configuration:
@@ -161,12 +161,17 @@ Configure Claude Code to route requests through Qwen via OAuth authentication.
 
 Alternative combined command:
 ```bash
-npm install -g npm@11.7.0 && npm install -g @qwen-code/qwen-code@latest && qwen
+npm install -g npm@11.8.0 && npm install -g @qwen-code/qwen-code@latest && qwen
 ```
 
 Then:
 ```bash
 mkdir -p ~/.claude-code-router && sudo npm install -g @anthropic-ai/claude-code && sudo npm install -g @musistudio/claude-code-router && cp configurations/claude-code-router-config-qwen.json ~/.claude-code-router/config.json && export QWEN_API_KEY=$(cat ~/.qwen/oauth_creds.json | grep access_token | awk -F '"' '{print $4}') && ccr code
+```
+
+or: (just use it only inside container!!!)
+```bash
+ccr code --dangerously-skip-permissions
 ```
 
 ## Troubleshooting
@@ -177,5 +182,5 @@ This is normal, as this is a stock image, which gives it a lot of pre-installed 
 
 Most likely the npm should be updated as the first step (for Gemini and Qwen):
 ```bash
-npm install -g npm@11.7.0
+npm install -g npm@11.8.0
 ```
