@@ -174,6 +174,20 @@ or: (just use it only inside container!!!)
 ccr code --dangerously-skip-permissions
 ```
 
+Install skills:
+```bash
+npm install -g @playwright/cli@latest
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo gpg --dearmor -o /usr/share/keyrings/yarn-archive-keyring.gpg
+npx playwright install chrome
+mkdir -p .claude/skills/playwright-cli
+curl -o .claude/skills/playwright-cli/SKILL.md   https://raw.githubusercontent.com/microsoft/playwright-cli/main/skills/playwright-cli/SKILL.md
+```
+
+to test playwright:
+```bash
+playwright-cli open https://demo.playwright.dev/todomvc/ --headed=false
+```
+
 ## Troubleshooting
 
 ### Dependency Issues
