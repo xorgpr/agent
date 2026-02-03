@@ -104,21 +104,25 @@
 <body>
     <h1>P2P Video Chat</h1>
 
+    <div class="video-container">
+        <div class="video-box" style="flex: 2; min-width: 400px;">
+            <video id="remote-video" autoplay playsinline style="width: 100%; max-width: 600px;"></video>
+            <span class="video-label">Opponent Video</span>
+        </div>
+        <div class="video-box" style="flex: 1; min-width: 200px;">
+            <video id="my-video" autoplay muted playsinline style="width: 100%; max-width: 200px;"></video>
+            <span class="video-label">Your Preview</span>
+        </div>
+    </div>
+
     <div class="container">
         <h2>Connection Status</h2>
         <div id="status" class="status disconnected">Setting up video chat...</div>
         <p>Your Peer ID: <span id="my-id">Generating...</span></p>
-        <p>Share this link to invite others: <input type="text" id="share-link" readonly style="width: 300px;"></p>
-    </div>
-
-    <div class="video-container">
-        <div class="video-box">
-            <video id="my-video" autoplay muted playsinline></video>
-            <span class="video-label">Your Video</span>
-        </div>
-        <div class="video-box">
-            <video id="remote-video" autoplay playsinline></video>
-            <span class="video-label">Remote Video</span>
+        <p>Share this link to invite others:</p>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <input type="text" id="share-link" readonly style="width: 300px; flex-grow: 1;">
+            <button id="copy-link-btn" onclick="copyShareLink()" style="padding: 10px 15px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">Copy Link</button>
         </div>
     </div>
 
@@ -130,9 +134,10 @@
     <div class="container">
         <h2>Instructions</h2>
         <ol>
-            <li>Copy the link above and share it with the person you want to call</li>
+            <li>Copy the link below and share it with the person you want to call</li>
             <li>Both of you will join the same room automatically</li>
             <li>After both peers join, connection happens automatically and video call starts</li>
+            <li>Opponent video appears first (large), your preview is on the right (small)</li>
             <li>If automatic connection doesn't work, use the manual connection section below to connect using peer IDs</li>
         </ol>
     </div>
@@ -720,6 +725,23 @@
             document.getElementById('call-btn').disabled = false;
             document.getElementById('end-call-btn').disabled = true;
             currentCall = null;
+        }
+
+        // Copy share link to clipboard
+        function copyShareLink() {
+            const shareLinkInput = document.getElementById('share-link');
+            shareLinkInput.select();
+            document.execCommand('copy');
+
+            // Show feedback to user
+            const originalText = document.getElementById('copy-link-btn').textContent;
+            document.getElementById('copy-link-btn').textContent = 'Copied!';
+            document.getElementById('copy-link-btn').style.backgroundColor = '#17a2b8';
+
+            setTimeout(() => {
+                document.getElementById('copy-link-btn').textContent = originalText;
+                document.getElementById('copy-link-btn').style.backgroundColor = '#28a745';
+            }, 2000);
         }
 
         // Connect when page loads
