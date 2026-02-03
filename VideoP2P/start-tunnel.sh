@@ -1,16 +1,19 @@
 #!/bin/bash
 
-echo "Starting persistent Pinggy tunnel for P2P server..."
-echo "This tunnel will expose both your PeerJS server (port 9000) and frontend (port 3000) to the public internet."
+echo "Options for making the P2P Video Chat publicly accessible:"
+echo "Since we now use external TURN server, we don't need Pinggy anymore."
 echo ""
-echo "Current configuration in index.html:"
-echo "- Host: (will be updated when tunnel starts)"
-echo "- Port: 443"
-echo "- Path: /p2p"
-echo "- Secure: true"
+echo "Option 1: Deploy to Cloudflare Pages"
+echo "  - Install Wrangler: npm install -g wrangler"
+echo "  - Login: wrangler login"
+echo "  - Deploy: wrangler pages deploy --project-name=p2p-video-chat ."
 echo ""
-
-# Start the tunnel with multiple port forwards
-echo "Starting tunnel with multiple port forwards... (this will continue running)"
-echo "Forwarding local port 9000 (signaling server) and 3000 (frontend) to public URLs"
-ssh -p 443 -R0:localhost:9000 -R0:localhost:3000 -o ServerAliveInterval=60 -o StrictHostKeyChecking=no a.pinggy.io
+echo "Option 2: Use ngrok"
+echo "  - Install ngrok: https://ngrok.com/download"
+echo "  - Run: ngrok http 9000"
+echo ""
+echo "Option 3: Use Cloudflare Tunnel (Cloudflared)"
+echo "  - Install cloudflared: https://developers.cloudflare.com/cloudflare-one/connections/connect-apps/install-and-setup/installation/"
+echo "  - Run: cloudflared tunnel --url http://localhost:9000"
+echo ""
+echo "Remember to update the peerConfig in index.html with the public URL if needed."

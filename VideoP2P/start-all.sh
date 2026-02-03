@@ -39,14 +39,14 @@ echo "   Frontend: http://localhost:9000"
 echo "   Signaling: http://localhost:9000/p2p"
 
 echo ""
-echo "3. Starting Pinggy tunnel..."
-echo "   This will expose the server to the public internet"
-echo "   Press Ctrl+C to stop the tunnel when done"
+echo "3. Server is now running locally!"
+echo "   To make it publicly accessible via Cloudflare, follow these steps:"
+echo "   - Install Cloudflare Wrangler: npm install -g wrangler"
+echo "   - Run: wrangler pages deploy --project-name=p2p-video-chat ."
+echo "   - Or use ngrok: ngrok http 9000"
 echo ""
-
-# Start the tunnel for the single port
-echo "Starting tunnel..."
-echo "Local port 9000 -> Public server (frontend + signaling)"
+echo "   The P2P connections will work via the external TURN server configuration."
+echo "   No more need for Pinggy.io as we use external TURN server."
 echo ""
-
-ssh -p 443 -R0:localhost:9000 -o ServerAliveInterval=60 -o StrictHostKeyChecking=no a.pinggy.io
+echo "   Press Ctrl+C to stop the server when done"
+echo ""

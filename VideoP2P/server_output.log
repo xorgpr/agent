@@ -1,0 +1,35 @@
+P2P Video Chat server listening on port 9000
+Signaling path: /p2p
+Frontend available at: /
+Proxied: true
+New client connected: 2808_1770118483213_xb3s2
+New client connected: 2808_1770118506259_hoh68
+Client disconnected: 2808_1770118483213_xb3s2
+New client connected: 2808_1770118531799_gxp5q
+Client disconnected: 2808_1770118506259_hoh68
+New client connected: 2808_1770118544608_5w4gj
+Client disconnected: 2808_1770118531799_gxp5q
+New client connected: 2808_1770118548023_6uv79
+Client disconnected: 2808_1770118544608_5w4gj
+Client disconnected: 2808_1770118548023_6uv79
+New client connected: 9287_1770118706037_5kidf
+Client disconnected: 9287_1770118706037_5kidf
+New client connected: 5835_1770118821065_u91th
+New client connected: 5835_1770118899349_lga8d
+Client disconnected: 5835_1770118899349_lga8d
+New client connected: 5835_1770118931612_thvdb
+Client disconnected: 5835_1770118931612_thvdb
+Client disconnected: 5835_1770118821065_u91th
+New client connected: 5835_1770118957351_3f4t6
+New client connected: 5835_1770119176866_2y3wn
+Client disconnected: 5835_1770119176866_2y3wn
+New client connected: 5835_1770119215332_xycfv
+Client disconnected: 5835_1770119215332_xycfv
+Client disconnected: 5835_1770118957351_3f4t6
+New client connected: 5835_1770119244290_ux494
+New client connected: 5811_1770119498671_duqdf
+Client disconnected: 5811_1770119498671_duqdf
+New client connected: 5811_1770119583785_rr2n6
+New client connected: 5811_1770119618162_jgs32
+Client disconnected: 5811_1770119583785_rr2n6
+Client disconnected: 5811_1770119618162_jgs32
