@@ -7,7 +7,9 @@
     "start": "node server.js"
   },
   "dependencies": {
+    "dotenv": "^16.6.1",
     "express": "^4.22.1",
+    "node-fetch": "^2.7.0",
     "peer": "^0.6.1"
   },
   "keywords": [

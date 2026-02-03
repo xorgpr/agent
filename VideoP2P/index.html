@@ -151,38 +151,73 @@
             port: window.location.port || (window.location.protocol === 'https:' ? 443 : 80), // Use current port or default
             path: '/p2p',
             secure: window.location.protocol === 'https:', // Use secure connection if page is served over HTTPS
-            // Add STUN/TURN servers for better NAT traversal (important for internet connectivity)
             config: {
-                iceServers: [
-                    {
-                      urls: "stun:stun.relay.metered.ca:80",
-                    },
-                    {
-                      urls: "turn:standard.relay.metered.ca:80",
-                      username: "b56568bd5432ebd0c568e5d3",
-                      credential: "DO+w23q9f8zB8vZm",
-                    },
-                    {
-                      urls: "turn:standard.relay.metered.ca:80?transport=tcp",
-                      username: "b56568bd5432ebd0c568e5d3",
-                      credential: "DO+w23q9f8zB8vZm",
-                    },
-                    {
-                      urls: "turn:standard.relay.metered.ca:443",
-                      username: "b56568bd5432ebd0c568e5d3",
-                      credential: "DO+w23q9f8zB8vZm",
-                    },
-                    {
-                      urls: "turns:standard.relay.metered.ca:443?transport=tcp",
-                      username: "b56568bd5432ebd0c568e5d3",
-                      credential: "DO+w23q9f8zB8vZm",
-                    },
-                ],
+                // ICE servers will be populated dynamically after fetching from server
+                iceServers: [],
                 // Additional configuration for better connectivity
                 iceTransportPolicy: 'all',
                 bundlePolicy: 'max-bundle'
             }
         };
+
+        // Fetch TURN server credentials from the server directly
+        async function getIceServers() {
+            try {
+                const response = await fetch('/api/turn-credentials', {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Cache-Control': 'no-cache'
+                    }
+                });
+
+                if (response.status === 429) {
+                    console.error('Rate limit exceeded when fetching TURN credentials');
+                    alert('Too many requests. Please try again later.');
+                    // Fallback STUN server
+                    return [{
+                        urls: "stun:stun.relay.metered.ca:80"
+                    }];
+                }
+
+                if (!response.ok) {
+                    console.warn('Failed to get TURN credentials, using fallback');
+                    // Fallback STUN server
+                    return [{
+                        urls: "stun:stun.relay.metered.ca:80"
+                    }];
+                }
+
+                const result = await response.json();
+                console.log('Fetched ICE servers from server:', result);
+
+                // Add STUN server as backup if not already included
+                let iceServers = result.iceServers || [];
+
+                // Ensure STUN server is included for better connectivity
+                const hasStun = iceServers.some(server => server.urls.includes('stun'));
+                if (!hasStun) {
+                    iceServers.unshift({
+                        urls: "stun:stun.relay.metered.ca:80"
+                    });
+                }
+
+                return iceServers;
+            } catch (error) {
+                console.error('Error fetching ICE servers:', error);
+                // Fallback STUN server
+                return [{
+                    urls: "stun:stun.relay.metered.ca:80"
+                }];
+            }
+        }
+
+        // Initialize peer config with fetched ICE servers
+        async function initializePeerConfig() {
+            const iceServers = await getIceServers();
+            peerConfig.config.iceServers = iceServers;
+            console.log('Updated peer config with ICE servers:', peerConfig);
+        }
+
 
         let peer = null;
         let conn = null;
@@ -220,7 +255,10 @@
         let hasInitiatedConnection = false;
         let roomId = null;
 
-        function connectToServer() {
+        async function connectToServer() {
+            // Initialize peer config with dynamic ICE servers
+            await initializePeerConfig();
+
             // Close existing peer if exists
             if (peer) {
                 peer.destroy();
@@ -745,8 +783,8 @@
         }
 
         // Connect when page loads
-        window.onload = function() {
-            connectToServer();
+        window.onload = async function() {
+            await connectToServer();
         };
 
         // Allow updating the config from outside (for when tunnel URL is known)
