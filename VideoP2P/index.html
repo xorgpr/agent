@@ -118,7 +118,7 @@
     <div class="container">
         <h2>Connection Status</h2>
         <div id="status" class="status disconnected">Setting up video chat...</div>
-        <p>Your Peer ID: <span id="my-id">Generating...</span></p>
+        <p>Your Peer ID: <span id="my-id">Generating...</span> <button id="refresh-id-btn" onclick="refreshPeerId()" style="padding: 4px 8px; font-size: 12px; margin-left: 10px;">Refresh ID</button></p>
         <p>Share this link to invite others:</p>
         <div style="display: flex; gap: 10px; align-items: center;">
             <input type="text" id="share-link" readonly style="width: 300px; flex-grow: 1;">
@@ -229,8 +229,14 @@
             // Get the room ID first
             roomId = getRoomId();
 
-            // Create new peer with config - include room ID in peer ID to facilitate matching
-            const peerId = `${roomId}_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
+            // Get or generate persistent peer ID using localStorage
+            let storedPeerId = localStorage.getItem('persistentPeerId');
+            if (!storedPeerId || !storedPeerId.startsWith(roomId + '_')) {
+                // Generate new peer ID if none exists or if room ID has changed
+                storedPeerId = `${roomId}_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
+                localStorage.setItem('persistentPeerId', storedPeerId);
+            }
+            const peerId = storedPeerId;
 
             peer = new Peer(peerId, peerConfig);
 
@@ -725,6 +731,37 @@
             document.getElementById('call-btn').disabled = false;
             document.getElementById('end-call-btn').disabled = true;
             currentCall = null;
+        }
+
+        // Refresh the persistent peer ID
+        function refreshPeerId() {
+            if (roomId) {
+                // Generate a new peer ID with the current room ID
+                const newPeerId = `${roomId}_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
+
+                // Save the new ID to localStorage
+                localStorage.setItem('persistentPeerId', newPeerId);
+
+                // Update the display
+                document.getElementById('my-id').textContent = newPeerId;
+
+                // Show feedback to user
+                const refreshBtn = document.getElementById('refresh-id-btn');
+                const originalText = refreshBtn.textContent;
+                refreshBtn.textContent = 'ID Refreshed!';
+                refreshBtn.style.backgroundColor = '#17a2b8';
+
+                setTimeout(() => {
+                    refreshBtn.textContent = originalText;
+                    refreshBtn.style.backgroundColor = '#007bff';
+                }, 2000);
+
+                // Optionally reconnect with the new ID
+                if (peer) {
+                    peer.destroy();
+                }
+                connectToServer();
+            }
         }
 
         // Copy share link to clipboard
