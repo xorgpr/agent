@@ -196,5 +196,17 @@ This is normal, as this is a stock image, which gives it a lot of pre-installed 
 
 Most likely the npm should be updated as the first step (for Gemini and Qwen):
 ```bash
-npm install -g npm@11.8.0
+npm install -g npm@11.10.0
+```
+
+### instructions for CC + CCR + iflow
+
+```bash
+export IFLOW_API_KEY="sk-a**************************1"
+
+npm install -g npm@11.10.0 && mkdir -p ~/.claude-code-router && sudo npm install -g @anthropic-ai/claude-code && sudo npm install -g @musistudio/claude-code-router
+cp configurations/claude-code-router-config-iflow-glm.json ~/.claude-code-router/config.json
+cp configurations/claude-code-router-config-iflow-kimi.json ~/.claude-code-router/config.json
+cp configurations/claude-code-router-config-iflow-qwen.json ~/.claude-code-router/config.json
+ccr code
 ```
