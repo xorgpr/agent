@@ -201,6 +201,8 @@ npm install -g npm@11.10.0
 
 ### instructions for CC + CCR + iflow
 
+execute `cp` command for glm/kimi/qwen llm or adjust in configuration folder.
+
 ```bash
 export IFLOW_API_KEY="sk-a**************************1"
 
