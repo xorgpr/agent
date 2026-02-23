@@ -205,6 +205,7 @@ execute `cp` command for glm/kimi/qwen llm or adjust in configuration folder.
 
 ```bash
 export IFLOW_API_KEY="sk-a**************************1"
+export GEMINI_API_KEY="AI******************bU"
 
 npm install -g npm@11.10.0 && mkdir -p ~/.claude-code-router && sudo npm install -g @anthropic-ai/claude-code && sudo npm install -g @musistudio/claude-code-router
 cp configurations/claude-code-router-config-iflow-glm.json ~/.claude-code-router/config.json
