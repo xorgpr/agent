@@ -55,13 +55,13 @@
     }
   },
   "Router": {
-    "default": "iflow,qwen3-coder-plus",
-    "background": "iflow,deepseek-v3.2",
+    "default": "iflow,iflow-rome-30ba3b",
+    "background": "iflow,qwen3-coder-plus",
     "think": "iflow,qwen3-235b-a22b-thinking-2507",
-    "longContext": "iflow,qwen3-235b-a22b-thinking-2507",
+    "longContext": "iflow,qwen3-coder-plus",
     "longContextThreshold": 60000,
     "webSearch": "iflow,qwen3-coder-plus",
-    "image": "iflow,kimi-k2-0905"
+    "image": "iflow,qwen3-vl-plus"
   },
   "CUSTOM_ROUTER_PATH": ""
 }
