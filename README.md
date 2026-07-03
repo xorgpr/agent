@@ -1,3 +1,10 @@
+### Steps to running OpenCode CLI with devcontainer.
+1. Run installetion script:
+    ```bash
+    curl -fsSL https://opencode.ai/install | bash
+    ```
+2. After the installation script finishes, the opencode binary path will automatically be added to your environment variables. To start using the command, open a new terminal tab.
+
 ### Steps to running Gemini CLI with devconatiner.
 1. Run this repo in your Codespaces (for github) or run it in the devcontainer locally (docker should be installed on your PC)
 2. Import your gemini API key from https://aistudio.google.com/apikey
